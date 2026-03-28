@@ -1,0 +1,431 @@
+/* ============================================ */
+/* FONTE */
+/* ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* ============================================ */
+/* VARIÁVEIS (TEMA) */
+/* ============================================ */
+:root {
+    /* DARK MODE (padrão) */
+    --bg: #141414;
+    --text: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.1);
+    --card-hover: rgba(255, 255, 255, 0.2);
+    --btn-bg: #141414;
+    --btn-text: #ffffff;
+    --border: rgba(255, 255, 255, 0.3);
+
+    /* ESPAÇAMENTO */
+    --spacing-sm: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 40px;
+}
+
+/* LIGHT MODE */
+body.light-mode {
+    --bg: #ffffff;
+    --text: #141414;
+    --card-bg: rgba(0, 0, 0, 0.05);
+    --card-hover: rgba(0, 0, 0, 0.1);
+    --btn-bg: #ffffff;
+    --btn-text: #141414;
+    --border: #ccc;
+}
+
+/* ============================================ */
+/* RESET */
+/* ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    display: block;
+}
+
+/* ============================================ */
+/* CORPO */
+/* ============================================ */
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* ============================================ */
+/* BOTÃO DARK MODE */
+/* ============================================ */
+.dark-mode-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    font-size: 22px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    z-index: 100;
+}
+
+.dark-mode-btn:hover {
+    transform: scale(1.1);
+}
+
+/* ============================================ */
+/* TÍTULO */
+/* ============================================ */
+h1 {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================ */
+/* CONTAINER DOS PERFIS */
+/* ============================================ */
+.perfis-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.perfis-container a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    justify-content: center;
+}
+
+/* ============================================ */
+/* PERFIL */
+/* ============================================ */
+.perfil {
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    width: 150px;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards;
+}
+
+.perfil:hover {
+    transform: translateY(-5px);
+}
+
+.perfis-container:hover .perfil {
+    opacity: 0.6;
+}
+
+.perfil:hover {
+    transform: scale(1.1);
+    opacity: 1;
+    z-index: 2;
+}
+
+/* ========== ANIMAÇÃO DE ENTRADA DOS PERFIS (JÁ EXISTE) ========== */
+/* Apenas ajuste de tempo e suavidade */
+.perfil {
+    transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity 0.3s ease;
+}
+
+.perfil:hover {
+    transform: translateY(-8px) scale(1.05);
+}
+
+/* Botão de tema escuro mais suave */
+.dark-mode-btn {
+    transition: transform 0.2s, background 0.2s;
+}
+
+.dark-mode-btn:hover {
+    transform: scale(1.1);
+    background-color: var(--btn-text);
+    color: var(--btn-bg);
+}
+
+/* ============================================ */
+/* WRAPPER DA IMAGEM (necessário para o overlay) */
+/* ============================================ */
+.perfil-img-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 150px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    /* Garante que o overlay respeite o border-radius */
+}
+
+.perfil img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.perfil:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.perfil figcaption {
+    margin-top: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+}
+
+/* ============================================ */
+/* OVERLAY DO LÁPIS (oculto por padrão) */
+/* ============================================ */
+.edit-overlay {
+    position: absolute;
+    inset: 0;
+    /* cobre 100% do wrapper */
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    border-radius: 12px;
+}
+
+.edit-overlay .icone-lapis {
+    width: 36px;
+    height: 36px;
+    color: white;
+    stroke-width: 1.8;
+    /* Remove estilos antigos que não se aplicam mais */
+    position: static;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+}
+
+/* ============================================ */
+/* CARD ADICIONAR */
+/* ============================================ */
+.perfil-add .add-icon {
+    width: 100%;
+    max-width: 150px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    font-weight: 300;
+    transition: 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-add:hover .add-icon {
+    transform: scale(1.05);
+    background-color: var(--card-hover);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================ */
+/* BOTÃO GERENCIAR */
+/* ============================================ */
+.gerenciar-container {
+    margin-top: var(--spacing-lg);
+    text-align: center;
+    width: 100%;
+}
+
+.btn-gerenciar {
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 10px 28px;
+    border-radius: 4px;
+    /* Netflix usa bordas retas, não arredondadas */
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    transition: all 0.25s ease;
+}
+
+.btn-gerenciar:hover {
+    background-color: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+    letter-spacing: 1.5px;
+}
+
+/* ============================================ */
+/* MODO EDIÇÃO */
+/* ============================================ */
+
+/* Exibe o overlay em todos os perfis no modo edição */
+.modo-edicao .edit-overlay {
+    opacity: 1;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* Impede que o link navegue durante edição */
+.modo-edicao .perfis-container a {
+    pointer-events: none;
+}
+
+/* Nome fica levemente esmaecido */
+.modo-edicao .perfil figcaption {
+    opacity: 0.7;
+}
+
+/* Botão "Concluído" com estilo diferenciado */
+.modo-edicao .btn-gerenciar {
+    border-color: white;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.15);
+    letter-spacing: 1.5px;
+}
+
+.modo-edicao .btn-gerenciar:hover {
+    background-color: white;
+    color: #141414;
+}
+
+/* Shake animation no título durante edição */
+.modo-edicao h1 {
+    opacity: 0.8;
+}
+
+/* ============================================ */
+/* ANIMAÇÃO */
+/* ============================================ */
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* delay nos perfis */
+.perfil:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.perfil:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.perfil:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.perfil:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.perfil:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+/* ============================================ */
+/* RESPONSIVIDADE COMPLETA */
+/* ============================================ */
+
+/* 📱 Celular pequeno */
+@media (max-width: 480px) {
+    .perfis-container {
+        gap: 20px;
+    }
+
+    h1 {
+        font-size: 18px;
+        margin-top: 60px;
+        margin-bottom: 15px;
+    }
+
+    .perfil {
+        width: 90px;
+    }
+
+    .perfil-img-wrapper,
+    .perfil-add .add-icon {
+        max-width: 90px;
+    }
+}
+
+/* 📱 Celular grande / Tablet pequeno */
+@media (min-width: 481px) and (max-width: 768px) {
+    h1 {
+        font-size: 22px;
+        margin-top: 55px;
+        margin-bottom: 20px;
+    }
+
+    .perfil {
+        width: 110px;
+    }
+
+    .perfil-img-wrapper,
+    .perfil-add .add-icon {
+        max-width: 110px;
+    }
+}
+
+/* 📺 TV */
+@media (min-width: 1441px) {
+    .perfis-container {
+        max-width: 1800px;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+
+    .perfil {
+        width: 180px;
+    }
+
+    .perfil-img-wrapper,
+    .perfil-add .add-icon {
+        max-width: 180px;
+    }
+}

@@ -1,15 +1,49 @@
-import { getYouTubeId, getRandomMatchScore, getRandomDuration, getRandomAgeBadge } from '../utils.js';
+import { getYouTubeId } from '../utils.js';
+
+/** Mesmo contrato de `data.js`: titulo, imagem (URL TMDB ou ""), progresso (% opcional), youtube (opcional). */
+function posterPlaceholderDataUri(titulo) {
+  const text = (titulo || "?")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/"/g, "&quot;")
+    .slice(0, 40);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="500" height="280" viewBox="0 0 500 280"><rect fill="#1a1a1a" width="500" height="280"/><text fill="#b3b3b3" x="250" y="145" dominant-baseline="middle" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18">${text}</text></svg>`;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+}
 
 export function createCard(item) {
+    const titulo = item.titulo ?? item.title ?? "";
+    const imagem = (item.imagem ?? item.img ?? "").trim();
+    const progresso = item.progresso ?? item.progress;
+    const temProgresso = progresso != null;
+
     const card = document.createElement('div');
     card.className = 'movie-card';
-    if (item.progress) {
+    if (temProgresso) {
         card.classList.add('has-progress');
     }
 
     const img = document.createElement('img');
-    img.src = item.img;
-    img.alt = `Movie cover`;
+    img.src = imagem ? imagem : posterPlaceholderDataUri(titulo);
+    img.alt = titulo || "Capa do filme";
+    img.loading = "lazy";
+    img.style.objectPosition = "top center";
+
+    img.onerror = () => {
+        img.style.display = "none";
+        card.style.background =
+            "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)";
+        const fallback = document.createElement("div");
+        fallback.style.cssText = `
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 8px; text-align: center;
+      font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.85); z-index: 2;
+    `;
+        fallback.textContent = titulo;
+        card.appendChild(fallback);
+    };
 
     const iframe = document.createElement('iframe');
     iframe.frameBorder = "0";
@@ -20,42 +54,12 @@ export function createCard(item) {
     card.appendChild(iframe);
     card.appendChild(img);
 
-    const ageBadge = getRandomAgeBadge();
-
-    const details = document.createElement('div');
-    details.className = 'card-details';
-    details.innerHTML = `
-        <div class="details-buttons">
-            <div class="left-buttons">
-                <button class="btn-icon btn-play-icon"><i class="fas fa-play" style="margin-left:2px;"></i></button>
-                ${item.progress ? '<button class="btn-icon"><i class="fas fa-check"></i></button>' : '<button class="btn-icon"><i class="fas fa-plus"></i></button>'}
-                <button class="btn-icon"><i class="fas fa-thumbs-up"></i></button>
-            </div>
-            <div class="right-buttons">
-                <button class="btn-icon"><i class="fas fa-chevron-down"></i></button>
-            </div>
-        </div>
-        <div class="details-info">
-            <span class="match-score">${getRandomMatchScore()}% relevante</span>
-            <span class="age-badge ${ageBadge.class}">${ageBadge.text}</span>
-            <span class="duration">${getRandomDuration(item.progress)}</span>
-            <span class="resolution">HD</span>
-        </div>
-        <div class="details-tags">
-            <span>Empolgante</span>
-            <span>Animação</span>
-            <span>Ficção</span>
-        </div>
-    `;
-    card.appendChild(details);
-
-
-    if (item.progress) {
+    if (temProgresso) {
         const pbContainer = document.createElement('div');
         pbContainer.className = 'progress-bar-container';
         const pbValue = document.createElement('div');
         pbValue.className = 'progress-value';
-        pbValue.style.width = `${item.progress}%`;
+        pbValue.style.width = `${progresso}%`;
         pbContainer.appendChild(pbValue);
         card.appendChild(pbContainer);
     }
@@ -64,7 +68,7 @@ export function createCard(item) {
     card.addEventListener('mouseenter', () => {
         const rect = card.getBoundingClientRect();
         const windowWidth = window.innerWidth;
-        
+
         if (rect.left < 100) {
             card.classList.add('origin-left');
         } else if (rect.right > windowWidth - 100) {

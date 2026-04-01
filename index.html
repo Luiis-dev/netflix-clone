@@ -4,60 +4,78 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Netflix</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=5" />
   </head>
-  <body>
-    <button class="dark-mode-btn" aria-label="Alternar modo escuro"></button>
 
+  <body>
+    <button class="dark-mode-btn" aria-label="Alternar tema">
+      <i data-lucide="sun"></i>
+    </button>
     <main>
       <h1>Quem está assistindo?</h1>
 
       <div class="perfis-container">
-        <!-- Perfis existentes -->
-        <figure class="perfil">
-          <a href="catalogo/catalogo.html">
-          <img
-            src="/MINHA_NETFLIX/AULA-04/assets/perfil-1.png"
-            alt="Perfil do Luis"
-          />
-          <figcaption>Luis</figcaption>
-          </a>
-        </figure>
-        <figure class="perfil">
-          <img
-            src="/MINHA_NETFLIX/AULA-04/assets/perfil-2.png"
-            alt="Perfil da Duda"
-          />
-          <figcaption>Duda</figcaption>
-        </figure>
-        <figure class="perfil">
-          <img
-            src="/MINHA_NETFLIX/AULA-04/assets/perfil-3.png"
-            alt="Perfil do Evton"
-          />
-          <figcaption>Evton</figcaption>
-        </figure>
-        <figure class="perfil">
-          <img
-            src="/MINHA_NETFLIX/AULA-04/assets/perfil-4.png"
-            alt="Perfil da Maria"
-          />
-          <figcaption>Maria</figcaption>
-        </figure>
+        <a href="catalogo/catalogo.html">
+          <figure class="perfil">
+            <!-- NOVO: wrapper necessário para o overlay do lápis -->
+            <div class="perfil-img-wrapper">
+              <img src="assets/perfil-1.png" alt="Perfil do Luis" />
+              <div class="edit-overlay">
+                <i data-lucide="pencil" class="icone-lapis"></i>
+              </div>
+            </div>
+            <figcaption>Luis</figcaption>
+          </figure>
+        </a>
 
-        <!-- Card de Adicionar perfil (dentro da grade) -->
+        <a href="catalogo/catalogo.html">
+          <figure class="perfil">
+            <div class="perfil-img-wrapper">
+              <img src="assets/perfil-2.png" alt="Perfil da Duda" />
+              <div class="edit-overlay">
+                <i data-lucide="pencil" class="icone-lapis"></i>
+              </div>
+            </div>
+            <figcaption>Duda</figcaption>
+          </figure>
+        </a>
+
+        <a href="catalogo/catalogo.html">
+          <figure class="perfil">
+            <div class="perfil-img-wrapper">
+              <img src="assets/perfil-3.png" alt="Perfil do Evton" />
+              <div class="edit-overlay">
+                <i data-lucide="pencil" class="icone-lapis"></i>
+              </div>
+            </div>
+            <figcaption>Evton</figcaption>
+          </figure>
+        </a>
+
+        <a href="catalogo/catalogo.html">
+          <figure class="perfil">
+            <div class="perfil-img-wrapper">
+              <img src="assets/perfil-4.png" alt="Perfil da Maria" />
+              <div class="edit-overlay">
+                <i data-lucide="pencil" class="icone-lapis"></i>
+              </div>
+            </div>
+            <figcaption>Maria</figcaption>
+          </figure>
+        </a>
+
         <figure class="perfil perfil-add">
           <div class="add-icon">+</div>
           <figcaption>Adicionar perfil</figcaption>
         </figure>
       </div>
 
-      <!-- Botão Gerenciar perfis (separado e centralizado) -->
       <div class="gerenciar-container">
         <button class="btn-gerenciar">Gerenciar perfis</button>
       </div>
     </main>
 
-    <script src="index.html"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="script.js"></script>
   </body>
 </html>

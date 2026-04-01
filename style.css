@@ -1,4 +1,39 @@
-﻿/* ============================================ */
+/* ============================================ */
+/* FONTE */
+/* ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* ============================================ */
+/* VARIÁVEIS (TEMA) */
+/* ============================================ */
+:root {
+    /* DARK MODE (padrão) */
+    --bg: #141414;
+    --text: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.1);
+    --card-hover: rgba(255, 255, 255, 0.2);
+    --btn-bg: #141414;
+    --btn-text: #ffffff;
+    --border: rgba(255, 255, 255, 0.3);
+
+    /* ESPAÇAMENTO */
+    --spacing-sm: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 40px;
+}
+
+/* LIGHT MODE */
+body.light-mode {
+    --bg: #ffffff;
+    --text: #141414;
+    --card-bg: rgba(0, 0, 0, 0.05);
+    --card-hover: rgba(0, 0, 0, 0.1);
+    --btn-bg: #ffffff;
+    --btn-text: #141414;
+    --border: #ccc;
+}
+
+/* ============================================ */
 /* RESET */
 /* ============================================ */
 * {
@@ -7,24 +42,30 @@
     box-sizing: border-box;
 }
 
+img {
+    display: block;
+}
+
 /* ============================================ */
 /* CORPO */
 /* ============================================ */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #141414;
-    color: white;
+    font-family: 'Montserrat', Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: 0.3s;
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-body.light-mode {
-    background-color: #ffffff;
-    color: #141414;
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 /* ============================================ */
@@ -37,8 +78,8 @@ body.light-mode {
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    background-color: #141414;
-    color: #ffffff;
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
     font-size: 22px;
     border: none;
     cursor: pointer;
@@ -53,54 +94,106 @@ body.light-mode {
     transform: scale(1.1);
 }
 
-body.light-mode .dark-mode-btn {
-    background-color: #ffffff;
-    color: white;
-}
-
 /* ============================================ */
 /* TÍTULO */
 /* ============================================ */
 h1 {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: var(--spacing-lg);
     font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 /* ============================================ */
-/* CONTAINER DOS PERFIS (GRID) */
+/* CONTAINER DOS PERFIS */
 /* ============================================ */
 .perfis-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    width: 100%;
     max-width: 1200px;
-    /* ajuste conforme necessário */
     margin: 0 auto;
 }
 
+.perfis-container a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    justify-content: center;
+}
+
 /* ============================================ */
-/* PERFIL PADRÃO (inclui o card de adicionar) */
+/* PERFIL */
 /* ============================================ */
 .perfil {
     text-decoration: none;
     text-align: center;
     cursor: pointer;
-    transition: 0.2s;
+    width: 150px;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards;
 }
 
 .perfil:hover {
     transform: translateY(-5px);
 }
 
-/* Imagem dos perfis normais */
-.perfil img {
+.perfis-container:hover .perfil {
+    opacity: 0.6;
+}
+
+.perfil:hover {
+    transform: scale(1.1);
+    opacity: 1;
+    z-index: 2;
+}
+
+/* ========== ANIMAÇÃO DE ENTRADA DOS PERFIS (JÁ EXISTE) ========== */
+/* Apenas ajuste de tempo e suavidade */
+.perfil {
+    transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity 0.3s ease;
+}
+
+.perfil:hover {
+    transform: translateY(-8px) scale(1.05);
+}
+
+/* Botão de tema escuro mais suave */
+.dark-mode-btn {
+    transition: transform 0.2s, background 0.2s;
+}
+
+.dark-mode-btn:hover {
+    transform: scale(1.1);
+    background-color: var(--btn-text);
+    color: var(--btn-bg);
+}
+
+/* ============================================ */
+/* WRAPPER DA IMAGEM (necessário para o overlay) */
+/* ============================================ */
+.perfil-img-wrapper {
+    position: relative;
     width: 100%;
     max-width: 150px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    /* Garante que o overlay respeite o border-radius */
+}
+
+.perfil img {
+    width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
-    border-radius: 12px;
-    transition: 0.2s;
+    display: block;
+    transition: opacity 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -109,22 +202,51 @@ h1 {
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Nome do perfil */
 .perfil figcaption {
     margin-top: 10px;
     font-weight: 500;
     font-size: 14px;
+    letter-spacing: 0.3px;
 }
 
 /* ============================================ */
-/* CARD DE ADICIONAR PERFIL (mesmo tamanho dos outros) */
+/* OVERLAY DO LÁPIS (oculto por padrão) */
+/* ============================================ */
+.edit-overlay {
+    position: absolute;
+    inset: 0;
+    /* cobre 100% do wrapper */
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    border-radius: 12px;
+}
+
+.edit-overlay .icone-lapis {
+    width: 36px;
+    height: 36px;
+    color: white;
+    stroke-width: 1.8;
+    /* Remove estilos antigos que não se aplicam mais */
+    position: static;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+}
+
+/* ============================================ */
+/* CARD ADICIONAR */
 /* ============================================ */
 .perfil-add .add-icon {
     width: 100%;
     max-width: 150px;
     aspect-ratio: 1 / 1;
     margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--card-bg);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -137,142 +259,173 @@ h1 {
 
 .perfil-add:hover .add-icon {
     transform: scale(1.05);
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--card-hover);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Modo claro para o card de adicionar */
-body.light-mode .perfil-add .add-icon {
-    background-color: rgba(0, 0, 0, 0.05);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-body.light-mode .perfil-add:hover .add-icon {
-    background-color: rgba(0, 0, 0, 0.1);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
 /* ============================================ */
-/* BOTÃO GERENCIAR PERFIS (centralizado) */
+/* BOTÃO GERENCIAR */
 /* ============================================ */
 .gerenciar-container {
-    margin-top: 40px;
+    margin-top: var(--spacing-lg);
     text-align: center;
     width: 100%;
 }
 
 .btn-gerenciar {
-    background: none;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #ffffff;
-    font-size: 16px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     cursor: pointer;
-    padding: 10px 24px;
-    border-radius: 30px;
-    transition: 0.2s;
-    font-weight: bold;
-    background-color: rgba(0, 0, 0, 0.3);
-    display: inline-block;
+    padding: 10px 28px;
+    border-radius: 4px;
+    /* Netflix usa bordas retas, não arredondadas */
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    transition: all 0.25s ease;
 }
 
 .btn-gerenciar:hover {
-    background-color: rgba(122, 122, 122, 0.2);
-    transform: scale(1.02);
+    background-color: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+    letter-spacing: 1.5px;
 }
 
-body.light-mode .btn-gerenciar {
-    border-color: #ccc;
-    background-color: #f5f5f5;
+/* ============================================ */
+/* MODO EDIÇÃO */
+/* ============================================ */
+
+/* Exibe o overlay em todos os perfis no modo edição */
+.modo-edicao .edit-overlay {
+    opacity: 1;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* Impede que o link navegue durante edição */
+.modo-edicao .perfis-container a {
+    pointer-events: none;
+}
+
+/* Nome fica levemente esmaecido */
+.modo-edicao .perfil figcaption {
+    opacity: 0.7;
+}
+
+/* Botão "Concluído" com estilo diferenciado */
+.modo-edicao .btn-gerenciar {
+    border-color: white;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.15);
+    letter-spacing: 1.5px;
+}
+
+.modo-edicao .btn-gerenciar:hover {
+    background-color: white;
     color: #141414;
 }
 
-body.light-mode .btn-gerenciar:hover {
-    background-color: rgba(229, 9, 20, 0.1);
+/* Shake animation no título durante edição */
+.modo-edicao h1 {
+    opacity: 0.8;
 }
 
 /* ============================================ */
-/* RESPONSIVIDADE */
+/* ANIMAÇÃO */
 /* ============================================ */
-@media (max-width: 768px) {
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* delay nos perfis */
+.perfil:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.perfil:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.perfil:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.perfil:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.perfil:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+/* ============================================ */
+/* RESPONSIVIDADE COMPLETA */
+/* ============================================ */
+
+/* 📱 Celular pequeno */
+@media (max-width: 480px) {
     .perfis-container {
-        grid-template-columns: repeat(2, 1fr);
         gap: 20px;
     }
 
+    h1 {
+        font-size: 18px;
+        margin-top: 60px;
+        margin-bottom: 15px;
+    }
+
+    .perfil {
+        width: 90px;
+    }
+
+    .perfil-img-wrapper,
+    .perfil-add .add-icon {
+        max-width: 90px;
+    }
+}
+
+/* 📱 Celular grande / Tablet pequeno */
+@media (min-width: 481px) and (max-width: 768px) {
     h1 {
         font-size: 22px;
         margin-top: 55px;
         margin-bottom: 20px;
     }
 
-    .perfil img,
+    .perfil {
+        width: 110px;
+    }
+
+    .perfil-img-wrapper,
     .perfil-add .add-icon {
         max-width: 110px;
     }
 }
 
-@media (max-width: 480px) {
+/* 📺 TV */
+@media (min-width: 1441px) {
     .perfis-container {
-        gap: 15px;
-        padding: 15px;
-    }
-
-    .perfil img,
-    .perfil-add .add-icon {
-        max-width: 90px;
+        max-width: 1800px;
     }
 
     h1 {
-        font-size: 18px;
+        font-size: 36px;
     }
 
-    .dark-mode-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 18px;
-        top: 10px;
-        right: 10px;
-    }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-    .perfis-container {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 25px;
-    }
-}
-
-@media (min-width: 1025px) {
-    .perfis-container {
-        grid-template-columns: repeat(5, 1fr);
-
-    }
-}
-
-
-@media (max-height: 500px) and (orientation: landscape) {
-    body {
-        justify-content: flex-start;
-        padding: 15px;
+    .perfil {
+        width: 180px;
     }
 
-    h1 {
-        font-size: 18px;
-        margin-top: 45px;
-        margin-bottom: 10px;
-    }
-
-    .perfis-container {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-    }
-
-    .perfil img,
+    .perfil-img-wrapper,
     .perfil-add .add-icon {
-        max-width: 70px;
-    }
-
-    .perfil figcaption {
-        font-size: 11px;
+        max-width: 180px;
     }
 }
